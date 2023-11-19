@@ -164,7 +164,7 @@ public void StartGame()
     IEnumerator PlayerMoveSpeedBuffDuration()
     {
         IncreasePlayerSpeed();
-        yield return new WaitForSeconds(12);
+        yield return new WaitForSeconds(6f);
         DecreasePlayerSpeed();
     }
     public void AcceleratePlayer()

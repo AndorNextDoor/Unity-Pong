@@ -5,15 +5,15 @@ using UnityEngine;
 public class BallMovement : MonoBehaviour
 {
     public float speed = 5f;
-    public float cooldownTime = 0.5f; 
+    private float cooldownTime = 0.5f; 
     private bool isCooldown = true;
+    public bool isContainingLive = true;
 
     private Rigidbody2D rb;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-
         rb.velocity = new Vector2(1f, 1f).normalized * 2;
         isCooldown = true;
     }

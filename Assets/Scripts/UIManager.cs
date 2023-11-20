@@ -1,62 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class UIManager : MonoBehaviour
-{   private static UIManager instance;
-    [SerializeField] private GameManager gameManager;
+{
+    [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private TextMeshProUGUI livesText;
+    [SerializeField] private Animator camAnimator;
     [SerializeField] private GameObject pauseMenu;
-    [SerializeField] private GameObject startMenu;
-    [SerializeField] private bool isOnStart = true;
-    [SerializeField] private bool isOnPause = false;
+    [SerializeField] private GameManager gameManager;
+    private bool isOnPause = false;
 
-    private void Awake()
-    {
-        // Check if an instance already exists
-        if (instance == null)
-        {
-            // If not, set the instance to this object
-            instance = this;
-            Time.timeScale = 0;
-
-            // Mark this object to not be destroyed when loading a new scene
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            // If an instance already exists, destroy this object
-            Destroy(gameObject);
-        }
-    }
     void Update()
     {
-        if (isOnStart)
+        if (isOnPause)
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                Time.timeScale = 1;
-                isOnStart = false;
-                startMenu.SetActive(false);
-            }
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                Application.Quit();
-            }
-        }
-
-        if(isOnPause)
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-
                 Time.timeScale = 1;
                 Scene currentscene = SceneManager.GetActiveScene();
                 SceneManager.LoadScene(currentscene.name);
                 isOnPause = false;
                 pauseMenu.SetActive(false);
-                gameManager.StartGame();
-
+                gameManager.StartLevel();
 
             }
             if (Input.GetKeyDown(KeyCode.Escape))
@@ -64,7 +34,7 @@ public class UIManager : MonoBehaviour
                 Application.Quit();
             }
         }
-        if(!isOnStart && !isOnPause)
+        else
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
@@ -74,10 +44,22 @@ public class UIManager : MonoBehaviour
             }
         }
     }
-    public void UI_ShowRestartMenu()
+    public void UI_ShowPauseMenu()
     {
-        isOnPause = true;
         Time.timeScale = 0;
+        isOnPause = true;
         pauseMenu.SetActive(true);
+    }
+    public void UpdateScore(int points)
+    {
+        scoreText.text = points.ToString();
+    }
+    public void UpdateLives(int lives)
+    {
+        livesText.text = lives.ToString();
+    }
+    public void CamShake()
+    {
+        camAnimator.SetTrigger("Shake");
     }
 }

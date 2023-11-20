@@ -14,7 +14,7 @@ public class BuffAdditionalBall : MonoBehaviour
     {
         if (collision.tag == "Ball")
         {
-            gameManager.SpawnBall();
+            gameManager.SpawnBall(false);
             Destroy(this.gameObject);
         }
     }

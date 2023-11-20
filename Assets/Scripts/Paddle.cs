@@ -6,27 +6,13 @@ public class Paddle : MonoBehaviour
 {
     public GameManager gameManager;
     public int health = 1;
+    public int maxHealth = 1;
 
     private void Start()
     {
         StartCoroutine(EnableCollisionAfterDelayCoroutine());
-    }
-    void Awake()
-    {
         gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
-    }
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        gameObject.GetComponent<AudioSource>().Play();
-        gameManager.AddToScore();
-        health -= 1;
-        if (health <= 0)
-        {
-            this.gameObject.GetComponent<Animation>().Play();
-            this.gameObject.GetComponent<BoxCollider2D>().enabled = false;
-            gameManager.RemovePaddles();
-            Destroy(this.gameObject,0.5f);
-        }
+        gameManager.PaddleOnSpawn(transform);
     }
 
     IEnumerator EnableCollisionAfterDelayCoroutine()
@@ -36,4 +22,18 @@ public class Paddle : MonoBehaviour
         // Enable collision after the specified delay
         this.gameObject.GetComponent<BoxCollider2D>().enabled = true;
     }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        gameObject.GetComponent<AudioSource>().Play();
+        health -= 1;
+        if (health <= 0)
+        {
+            this.gameObject.GetComponent<BoxCollider2D>().enabled = false;
+            this.gameObject.GetComponent<Animation>().Play();
+            gameManager.PaddleDestroyed(maxHealth * 100);
+            Destroy(this.gameObject,0.5f);
+        }
+    }
+
 }

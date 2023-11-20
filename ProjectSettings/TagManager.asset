@@ -7,9 +7,6 @@ TagManager:
   - Ball
   - Paddles
   - Enemies
-  - ScoreText
-  - LivesText
-  - ui_manager
   - GameManager
   layers:
   - Default
